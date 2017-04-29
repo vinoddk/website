@@ -1,0 +1,29 @@
+<%@ page import="java.sql.*"%>
+<%@ page import ="javax.sql.*"%>
+<% 
+String emailid = request.getParameter("emailid");
+String pwd = request.getParameter("password");
+Class.forName("com.mysql.jdbc.Driver");
+java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://sql12.freemysqlhosting.net:3306/sql12171767","sql12171767","6DEQxgklNG");
+Statement st = con.createStatement();
+String email = request.getParameter("emailid");
+session.setAttribute("emailid",email);
+if(email !=null )
+	
+
+{
+	ResultSet rs= st.executeQuery("select * from users where emailid='"+emailid+"'" );
+if(rs.next())
+{
+	out.print("Emaild already exist please try to login");
+}
+else{
+int i = st.executeUpdate("insert into users values('"+emailid+"','"+pwd+"')");
+out.print("<html><h3>Registration Successfull Please login<h3></html>");
+}
+}
+else
+{
+	 out.println("invalid session");
+}
+%>
