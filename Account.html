@@ -1,0 +1,39 @@
+<head>
+<meta http-equiv="Refresh" content="5;url=http://localhost:8080/website/Accountdetails.jsp">
+</head>
+
+<%@ page import="java.sql.*"%>
+<%@ page import ="javax.sql.*"%>
+
+
+<%
+
+String emailid = request.getParameter("emailid");
+String pwd = request.getParameter("password");
+Class.forName("com.mysql.jdbc.Driver");
+java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://sql12.freemysqlhosting.net:3306/sql12171767","sql12171767","6DEQxgklNG");
+Statement st = con.createStatement();
+ResultSet rs= st.executeQuery("select * from users where emailid='"+emailid+"'" );
+if(rs.next())
+{
+if(rs.getString(2).equals(pwd))
+{
+	 String email = request.getParameter("emailid");
+	session.setAttribute("emailid",email);
+	response.sendRedirect("http://localhost:8080/website/Accountdetails.html");
+	
+	
+}
+else
+{
+	 out.print("Wrong password");
+	 session.invalidate();
+	 response.sendRedirect("http://localhost:8080/website/Accountdetails.html");
+}
+}
+else{ out.print("Email id wrong");
+session.invalidate();
+response.sendRedirect("http://localhost:8080/website/Accountdetails.html");
+}
+
+%>
